@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#7557e8" />
+  <meta name="description" content="수업용 캔바 로그인 정보 복사 페이지" />
+  <title>캔바 ID</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%237557e8'/%3E%3Cpath d='M41 22c-2-3-5-5-9-5-8 0-14 6-14 15s6 15 14 15c4 0 8-2 10-5' fill='none' stroke='white' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #24213a;
+      --muted: #6d6880;
+      --purple: #7557e8;
+      --purple-deep: #5e42c7;
+      --aqua: #35c5c3;
+      --surface: rgba(255, 255, 255, 0.94);
+      --line: #e6e1f6;
+      --shadow: 0 18px 45px rgba(71, 50, 137, 0.14);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Pretendard, "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(53,197,195,.24), transparent 25rem),
+        radial-gradient(circle at 92% 92%, rgba(117,87,232,.23), transparent 28rem),
+        #f7f5ff;
+    }
+
+    main {
+      width: min(760px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 56px 0 48px;
+    }
+
+    .title-wrap { text-align: center; margin-bottom: 30px; }
+
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--purple), var(--aqua));
+      color: #fff;
+      font-weight: 900;
+      font-size: 2rem;
+      box-shadow: 0 12px 28px rgba(92,68,196,.28);
+    }
+
+    .heading-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    h1 { margin: 0; font-size: clamp(2rem, 8vw, 3.25rem); letter-spacing: -.05em; }
+
+    .canva-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 12px 24px;
+      border-radius: 14px;
+      color: #fff;
+      background: linear-gradient(120deg, var(--aqua), #159fbd);
+      box-shadow: 0 8px 18px rgba(31, 169, 184, .25);
+      font-weight: 850;
+      text-decoration: none;
+      transition: transform .14s ease, box-shadow .14s ease;
+    }
+
+    .canva-link:hover { transform: translateY(-2px); box-shadow: 0 12px 22px rgba(31, 169, 184, .32); }
+    .canva-link:focus-visible { outline: 4px solid rgba(53,197,195,.42); outline-offset: 3px; }
+    .guide { margin: 10px 0 0; color: var(--muted); font-size: 1.05rem; }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 28px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .id-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    button {
+      appearance: none;
+      width: 100%;
+      min-height: 66px;
+      border: 0;
+      border-radius: 17px;
+      padding: 14px 18px;
+      font: inherit;
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .14s ease, box-shadow .14s ease, background .14s ease;
+    }
+
+    .id-button {
+      background: #fff;
+      border: 2px solid var(--line);
+      color: var(--ink);
+      box-shadow: 0 5px 14px rgba(54,38,101,.06);
+    }
+
+    .id-button:hover { border-color: #b9acef; transform: translateY(-2px); box-shadow: 0 9px 18px rgba(54,38,101,.11); }
+    .id-button:active { transform: translateY(0); }
+    button:focus-visible { outline: 4px solid rgba(53,197,195,.42); outline-offset: 3px; }
+
+    .password-wrap { margin-top: 22px; padding-top: 22px; border-top: 2px dashed var(--line); }
+    .password-button { color: #fff; background: linear-gradient(120deg, var(--purple), var(--purple-deep)); box-shadow: 0 10px 22px rgba(92,66,199,.25); }
+    .password-button:hover { transform: translateY(-2px); box-shadow: 0 14px 27px rgba(92,66,199,.32); }
+
+    .status {
+      display: grid;
+      place-items: center;
+      min-height: 46px;
+      margin: 18px 0 0;
+      border-radius: 14px;
+      color: var(--purple-deep);
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .status.show { background: #efebff; animation: pop .18s ease-out; }
+    @keyframes pop { from { transform: scale(.97); opacity: .3; } }
+
+    @media (max-width: 560px) {
+      main { padding-top: 34px; }
+      .panel { padding: 18px; border-radius: 22px; }
+      .id-grid { grid-template-columns: 1fr; gap: 11px; }
+      button { min-height: 62px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) { button, .status { transition: none; animation: none; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="title-wrap">
+      <div class="mark" aria-hidden="true">C</div>
+      <div class="heading-row">
+        <h1>캔바 ID</h1>
+        <a class="canva-link" href="https://www.canva.com/ko_kr/login/" target="_blank" rel="noopener noreferrer">캔바로 이동하기 ↗</a>
+      </div>
+      <p class="guide">내 이름을 누르면 로그인 ID가 복사돼요.</p>
+    </header>
+
+    <section class="panel" aria-label="캔바 로그인 정보 복사">
+      <div id="idGrid" class="id-grid">
+        <!-- 선생님: data-copy=" " 안에 학생의 구글 ID를 입력하세요. -->
+        <button class="id-button" type="button" data-copy="bloom.me40+@gmail.com">캔바 ID (이서준)</button>
+        <button class="id-button" type="button" data-copy="bloom.me40++@gmail.com">캔바 ID (박정원)</button>
+        <button class="id-button" type="button" data-copy="bloom.me40+++@gmail.com">캔바 ID (백주호)</button>
+        <button class="id-button" type="button" data-copy="bloom.me40++++@gmail.com">캔바 ID (이민서)</button>
+        <button class="id-button" type="button" data-copy="digitalchoco001+@gmail.com">캔바 ID (이준호)</button>
+        <button class="id-button" type="button" data-copy="digitalchoco001+++@gmail.com">캔바 ID (이예준)</button>
+        <button class="id-button" type="button" data-copy="digitalchoco001++++@gmail.com">캔바 ID (이하나)</button>
+        <button class="id-button" type="button" data-copy="digitalchoco002+@gmail.com"">캔바 ID (박예빈)</button>
+        <button class="id-button" type="button" data-copy="digitalchoco002++@gmail.com">캔바 ID (김유주)</button>
+      </div>
+      <div class="password-wrap">
+        <!-- 선생님: 아래 data-copy=" " 안에 공용 비밀번호를 입력하세요. -->
+        <button id="passwordButton" class="password-button" type="button" data-copy="alfocodna">공용 비밀번호 복사</button>
+      </div>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script>
+    const status = document.querySelector("#status");
+    let statusTimer;
+
+    document.querySelectorAll(".id-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        const studentName = button.textContent.replace("캔바 ID (", "").replace(")", "");
+        copySecret(button.dataset.copy, studentName + " 학생의 ID가 복사되었어요!");
+      });
+    });
+
+    document.querySelector("#passwordButton").addEventListener("click", () => {
+      copySecret(document.querySelector("#passwordButton").dataset.copy, "공용 비밀번호가 복사되었어요!");
+    });
+
+    async function copySecret(value, message) {
+      try {
+        await navigator.clipboard.writeText(value);
+      } catch (error) {
+        const helper = document.createElement("textarea");
+        helper.value = value;
+        helper.setAttribute("readonly", "");
+        helper.style.position = "fixed";
+        helper.style.opacity = "0";
+        document.body.append(helper);
+        helper.select();
+        document.execCommand("copy");
+        helper.remove();
+      }
+
+      clearTimeout(statusTimer);
+      status.textContent = message;
+      status.classList.add("show");
+      statusTimer = setTimeout(() => {
+        status.textContent = "";
+        status.classList.remove("show");
+      }, 2400);
+    }
+  </script>
+</body>
+</html>
